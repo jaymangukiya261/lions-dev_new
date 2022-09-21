@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "141664835476",
+    "project_id": "lions-almanac-district-321-a2",
+    "storage_bucket": "lions-almanac-district-321-a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141664835476:android:c70ebd461be341d8c6a181",
+        "android_client_info": {
+          "package_name": "com.ces.lions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141664835476-nus3oh56c4vhfr1ktq0su7sg3agsqg17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqiGXPI64dCMpiYTUCaUQaNst9fVYajMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141664835476-nus3oh56c4vhfr1ktq0su7sg3agsqg17.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "141664835476-gbh694jh5v4bq1t1fis4r3r4r08frhpf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ces.lions"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

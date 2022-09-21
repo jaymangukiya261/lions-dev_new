@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>141664835476-gbh694jh5v4bq1t1fis4r3r4r08frhpf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.141664835476-gbh694jh5v4bq1t1fis4r3r4r08frhpf</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAuvj-8kDC8HkBIGyrAgUf8U35pQUmdcpg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>141664835476</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ces.lions</string>
+	<key>PROJECT_ID</key>
+	<string>lions-almanac-district-321-a2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>lions-almanac-district-321-a2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:141664835476:ios:61865c63ba5cdcc7c6a181</string>
+</dict>
+</plist>
