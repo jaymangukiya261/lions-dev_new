@@ -11,7 +11,7 @@ description: Lions Club.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.1+6
+version: 1.0.1+9
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -49,7 +49,7 @@ dev_dependencies:
 flutter_icons:
   android: "ic_launcher"
   ios: true
-  image_path: "assets/images/international_con.png"
+  image_path: "assets/images/text_logo.png"
   remove_alpha_ios: true
   #image_path_android: "assets/images/lions_logo.png"
   #image_path_ios: "assets/images/lions_logo.png"
@@ -93,6 +93,7 @@ flutter:
     - assets/images/close.png
     - assets/images/international_con.png
     - assets/images/pdf_logo.png
+    - assets/images/text_logo.png
   #  - assets/images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
