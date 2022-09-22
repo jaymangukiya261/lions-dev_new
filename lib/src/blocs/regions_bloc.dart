@@ -9,6 +9,7 @@ class RegionBloc {
   final _fetcher = PublishSubject<List<Region>>();
 
   List<Region> _regionList = [];
+  List<Region> regionPrint = [];
   String _searchTerm = '';
 
   Observable<List<Region>> get allRegions => _fetcher.stream;
@@ -17,6 +18,7 @@ class RegionBloc {
     RegionResponse response = await _repository.fetchRegions();
     _regionList = response.results;
     _fetcher.sink.add(response.results);
+    regionPrint = response.results;
   }
 
   search(String term) {
@@ -32,6 +34,13 @@ class RegionBloc {
     } else {
       clear();
     }
+  }
+
+  searchRegionReport(String term) {
+    regionPrint = _regionList
+        .where((element) =>
+            element.name.toLowerCase().contains(term.toLowerCase()))
+        .toList();
   }
 
   clear() {

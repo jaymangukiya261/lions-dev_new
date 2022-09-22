@@ -8,9 +8,10 @@ import 'package:lions/src/models/club.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
+import '../../models/region.dart';
+
 class pdfCreation {
-  bool isDownloading = false;
-  createPdf(List<Club> apidata) async {
+  createClubPdf(List<Club> apidata) async {
     // Create a new PDF document.
     final PdfDocument document = PdfDocument();
     //Add page to the PDF
@@ -37,7 +38,6 @@ class pdfCreation {
     document.dispose();
     //Save and launch the file.
     await saveAndLaunchFile(bytes, 'ClubsReport.pdf');
-    isDownloading = true;
   }
 
   void drawGrid(PdfPage page, PdfGrid grid, PdfLayoutResult result) {
@@ -73,7 +73,7 @@ class pdfCreation {
     //         totalPriceCellBounds.height));
   }
 
-  PdfGrid getGrid(List<Club> apidata) {
+  PdfGrid getGrid(List<Club> apiData) {
     //Create a PDF grid
     final PdfGrid grid = PdfGrid();
     //Secify the columns count to the grid.
@@ -113,7 +113,7 @@ class pdfCreation {
     // officers.cells[2].value = 'Jay MANGUKIYA ';
     // officers.cells[3].value = 'Jay MANGUKIYA ';
     // officers.cells[4].value = 'Jay MANGUKIYA ';
-    apidata.forEach((element) async {
+    apiData.forEach((element) async {
       // addProducts(element.name, element.clubNumber, element.zone.region.name,
       //     element.zone.name, element.city.name, grid);
 
@@ -186,11 +186,8 @@ class pdfCreation {
     return grid;
   }
 
-  Future<File> memberGrid() async {}
-
   Future<PdfLayoutResult> drawHeader(
       PdfPage page, Size pageSize, PdfGrid grid) async {
-    memberGrid();
     //Draw rectangle
     page.graphics.drawRectangle(
         brush: PdfSolidBrush(PdfColor(15, 54, 156)),
@@ -251,5 +248,11 @@ class pdfCreation {
     row.cells[2].value = quantity.toString();
     row.cells[3].value = total.toString();
     row.cells[4].value = state.toString();
+  }
+
+  createRegionPdf(List<Region> apiData) {
+    apiData.forEach((element) {
+      print(element.chairperson);
+    });
   }
 }

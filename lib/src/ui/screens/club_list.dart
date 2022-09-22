@@ -44,11 +44,7 @@ class _ClubListState extends State<ClubList> {
           actions: [
             TextButton(
                 onPressed: () {
-                  bloc.clubListPrint.forEach((element) {
-                    print('Hello final data ${element.name}');
-                  });
-
-                  pdfs.createPdf(bloc.clubListPrint);
+                  pdfs.createClubPdf(bloc.clubListPrint);
                 },
                 child: Text(
                   'Club Report',
@@ -105,6 +101,7 @@ class _ClubListState extends State<ClubList> {
                     filter = "";
                 }
                 bloc.filter(filter);
+                bloc.filterReport(filter);
               },
             ),
           ),

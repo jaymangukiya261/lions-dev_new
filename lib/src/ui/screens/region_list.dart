@@ -6,6 +6,8 @@ import 'package:lions/src/ui/widget/region_list_item.dart';
 import 'package:lions/src/ui/widget/search-bar/app_bar_controller.dart';
 import 'package:lions/src/ui/widget/search-bar/search_app_bar.dart';
 
+import '../../blocs/generate_pdf/clubs_pdf.dart';
+
 class RegionList extends StatefulWidget {
   LionsCategory category;
 
@@ -27,6 +29,7 @@ class _RegionListState extends State<RegionList> {
     bloc.fetchAllRegions();
   }
 
+  final pdfs = pdfCreation();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +38,14 @@ class _RegionListState extends State<RegionList> {
         mainAppBar: AppBar(
           title: Text("${widget.category.title}"),
           actions: [
+            TextButton(
+                onPressed: () {
+                  pdfs.createRegionPdf(bloc.regionPrint);
+                },
+                child: Text(
+                  'Club Report',
+                  style: TextStyle(color: Colors.white),
+                )),
             InkWell(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
