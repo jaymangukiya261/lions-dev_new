@@ -4,7 +4,7 @@ import 'package:lions/src/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
-import 'generate_pdf/clubs_pdf.dart';
+import 'generate_pdf/bloc_pdf.dart';
 
 class ClubBloc {
   final _repository = Repository();

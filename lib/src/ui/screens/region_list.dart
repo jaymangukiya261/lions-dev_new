@@ -6,7 +6,9 @@ import 'package:lions/src/ui/widget/region_list_item.dart';
 import 'package:lions/src/ui/widget/search-bar/app_bar_controller.dart';
 import 'package:lions/src/ui/widget/search-bar/search_app_bar.dart';
 
-import '../../blocs/generate_pdf/clubs_pdf.dart';
+import '../../blocs/generate_pdf/bloc_pdf.dart';
+import '../../models/zone_response.dart';
+import '../../resources/repository.dart';
 
 class RegionList extends StatefulWidget {
   LionsCategory category;
@@ -23,6 +25,7 @@ class RegionList extends StatefulWidget {
 class _RegionListState extends State<RegionList> {
   final AppBarController appBarController = AppBarController();
 
+  final _repository = Repository();
   @override
   void initState() {
     super.initState();
@@ -38,14 +41,30 @@ class _RegionListState extends State<RegionList> {
         mainAppBar: AppBar(
           title: Text("${widget.category.title}"),
           actions: [
-            TextButton(
-                onPressed: () {
-                  pdfs.createRegionPdf(bloc.regionPrint);
-                },
-                child: Text(
-                  'Club Report',
-                  style: TextStyle(color: Colors.white),
-                )),
+            if (!pdfs.isProcessing)
+              TextButton(
+                  onPressed: () {
+                    setState(() {
+                      pdfs.createRegionPdf(bloc.regionPrint).whenComplete(() {
+                        setState(() {
+                          pdfs.isProcessing = false;
+                        });
+                      });
+                    });
+                  },
+                  child: Text(
+                    'Region Report',
+                    style: TextStyle(color: Colors.white),
+                  ))
+            else
+              SizedBox(
+                  height: 5,
+                  width: 50,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  )),
             InkWell(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
