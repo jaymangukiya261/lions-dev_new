@@ -228,126 +228,116 @@ class pdfCreation {
   bool isProcessing = false;
   getRgionGrid(List<Region> apiData, pageSize) async {
     final PdfGrid grid = PdfGrid();
-    grid.columns.add(count: 1);
-    grid.columns[0].width = pageSize.width;
+    grid.columns.add(count: 4);
+    grid.columns[0].width = pageSize.width / 4;
+    grid.columns[1].width = pageSize.width / 4;
+    grid.columns[2].width = pageSize.width / 4;
+    grid.columns[3].width = pageSize.width / 4;
 
     for (var element in apiData) {
       final PdfGridRow row = grid.rows.add();
+      final PdfGridRow row2 = grid.rows.add();
       final PdfGridRow row3 = grid.rows.add();
-      final PdfGridRow row4 = grid.rows.add();
-      final PdfGridRow row5 = grid.rows.add();
-      final PdfGridRow row6 = grid.rows.add();
-      final PdfGridRow row7 = grid.rows.add();
-      final PdfGridRow row8 = grid.rows.add();
-      final PdfGridRow row9 = grid.rows.add();
-      final PdfGridRow row10 = grid.rows.add();
-      final PdfGridRow row11 = grid.rows.add();
-      final PdfGridRow row12 = grid.rows.add();
-      final PdfGridRow row13 = grid.rows.add();
-      final PdfGridRow row14 = grid.rows.add();
-      final PdfGridRow row15 = grid.rows.add();
-      final PdfGridRow row16 = grid.rows.add();
-      final PdfGridRow row17 = grid.rows.add();
-      final PdfGridRow row18 = grid.rows.add();
-      final PdfGridRow row19 = grid.rows.add();
       row.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
           style: PdfFontStyle.bold);
+      row.cells[0].style.cellPadding =
+          PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+      row.cells[0].columnSpan = 4;
       row.cells[0].style.backgroundBrush = PdfSolidBrush(PdfColor(15, 54, 156));
       row.cells[0].style.font = PdfStandardFont(PdfFontFamily.helvetica, 25);
       row.cells[0].style.textBrush = PdfBrushes.white;
       row.cells[0].stringFormat =
           PdfStringFormat(alignment: PdfTextAlignment.center);
-      row3.cells[0].stringFormat =
-          PdfStringFormat(alignment: PdfTextAlignment.center);
-      row3.cells[0].style.backgroundBrush =
-          PdfSolidBrush(PdfColor(80, 88, 245));
-      row3.cells[0].style.textBrush = PdfBrushes.white;
-      row3.cells[0].style.font = PdfStandardFont(PdfFontFamily.helvetica, 20);
-      row3.cells[0].value = 'Chairperson';
       row.cells[0].value = element.name;
-      row4.cells[0].value =
-          'Name                 :- ${element.chairperson.name ?? ''}';
-      row5.cells[0].value =
-          'Email                :- ${element.chairperson.email ?? ''}';
-      row6.cells[0].value =
+      row2.cells[0].style.cellPadding =
+          PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+      row2.cells[0].columnSpan = 2;
+      row2.cells[0].value =
+          'Chairperson Name                 :- ${element.chairperson.name ?? ''}';
+      row2.cells[2].columnSpan = 2;
+      row2.cells[2].style.cellPadding =
+          PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+      row2.cells[2].value =
           'Contact Number       :- ${element.chairperson.phoneNumber ?? ''}';
-      row7.cells[0].value =
-          'Club                 :- ${element.chairperson.club.name ?? ''}';
-      row8.cells[0].value =
-          'Membership Number    :- ${element.chairperson.membershipNumber ?? ''}';
-      row9.cells[0].value =
-          'Blood Group          :- ${element.chairperson.bloodGroup ?? ''}';
-      row10.cells[0].value =
-          'Date of Birth       :- ${element.chairperson.dateOfBirth ?? ''}';
-      row11.cells[0].value =
-          'Spouse              :- ${element.chairperson.spouseName ?? ''}';
-      row12.cells[0].value =
-          'Date of Anniversary :- ${element.chairperson.dateOfAnniversary ?? ''}';
-      row13.cells[0].value =
-          'Address             :- ${element.chairperson.address ?? ''}';
-      row14.cells[0].value =
-          'Apartment           :- ${element.chairperson.apartment ?? ''}';
-      row15.cells[0].value =
-          'Landmark            :- ${element.chairperson.landmark ?? ''}';
-      row16.cells[0].value =
-          'City                :- ${element.chairperson.city ?? ''}';
-      row17.cells[0].value =
-          'State               :- ${element.chairperson.state ?? ''}';
-      row18.cells[0].value =
-          'Postal              :- ${element.chairperson.postal ?? ''}';
+      row3.cells[0].style.cellPadding =
+          PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+      row3.cells[0].value =
+          'Email                :- ${element.chairperson.email ?? ''}';
+      row3.cells[0].columnSpan = 2;
+      row3.cells[2].style.cellPadding =
+          PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
 
-      row19.cells[0].stringFormat =
-          PdfStringFormat(alignment: PdfTextAlignment.center);
-      row19.cells[0].value = 'Zones';
-      row19.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
-          style: PdfFontStyle.bold);
+      row3.cells[2].columnSpan = 2;
+      row3.cells[2].value =
+          'Club                 :- ${element.chairperson.club.name ?? ''}';
 
       ZoneResponse response = await _repository.fetchZones(element.id);
 
       for (var element2 in response.results) {
         final row = grid.rows.add();
         final row2 = grid.rows.add();
+        row.cells[0].columnSpan = 4;
+        row.cells[0].style.cellPadding =
+            PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
         row.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
             style: PdfFontStyle.bold);
         row.cells[0].stringFormat =
             PdfStringFormat(alignment: PdfTextAlignment.center);
         row.cells[0].value = element2.name + '(${element.name})';
-
+        row2.cells[0].style.cellPadding =
+            PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+        row2.cells[0].columnSpan = 4;
         row2.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
             style: PdfFontStyle.bold);
         row2.cells[0].stringFormat =
-            PdfStringFormat(alignment: PdfTextAlignment.center);
+            PdfStringFormat(alignment: PdfTextAlignment.left);
         row2.cells[0].value = 'Clubs';
 
-        ClubResponse clubresponse =
+        ClubResponse clubResponse =
             await _repository.fetchClubs(element.id, element2.id);
 
-        for (var element3 in clubresponse.results) {
+        for (var element3 in clubResponse.results) {
           final row = grid.rows.add();
           row.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
               style: PdfFontStyle.bold);
+          row.cells[0].columnSpan = 4;
+          row.cells[0].style.cellPadding =
+              PdfPaddings(bottom: 5, left: 15, right: 5, top: 5);
           row.cells[0].value = element3.name;
           final row2 = grid.rows.add();
+          row2.cells[0].columnSpan = 2;
+          row2.cells[0].style.cellPadding =
+              PdfPaddings(bottom: 5, left: 15, right: 5, top: 5);
+          row2.cells[2].columnSpan = 2;
+          row2.cells[2].style.cellPadding =
+              PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
           row2.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
               style: PdfFontStyle.bold);
-          row2.cells[0].value = 'Officers';
+          row2.cells[0].value = 'Officers Name ';
+          row2.cells[2].value = 'Officers Number ';
 
           element3.members.forEach((element4) {
             final row = grid.rows.add();
-
+            row.cells[0].style.cellPadding =
+                PdfPaddings(bottom: 5, left: 15, right: 5, top: 5);
+            row.cells[0].columnSpan = 2;
             row.cells[0].value = element4.name;
+            row.cells[2].style.cellPadding =
+                PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+            row.cells[2].columnSpan = 2;
+            row.cells[2].value = element4.phoneNumber;
           });
         }
       }
     }
-    for (int i = 0; i < grid.rows.count; i++) {
-      final PdfGridRow row = grid.rows[i];
-      for (int j = 0; j < row.cells.count; j++) {
-        final PdfGridCell cell = row.cells[j];
-        cell.style.cellPadding =
-            PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
-      }
-    }
+    // for (int i = 0; i < grid.rows.count; i++) {
+    //   final PdfGridRow row = grid.rows[i];
+    //   for (int j = 0; j < row.cells.count; j++) {
+    //     final PdfGridCell cell = row.cells[j];
+    //     cell.style.cellPadding =
+    //         PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+    //   }
+    // }
     isProcessing = false;
 
     ///this return is complesory

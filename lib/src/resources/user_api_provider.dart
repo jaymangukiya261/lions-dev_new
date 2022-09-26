@@ -66,21 +66,31 @@ class UserApiProvider {
   }
 
   Future<RegionResponse> fetchRegionList() async {
-    final response = await client.get(Uri.parse(BASE_URL + "getRegions"));
-    if (response.statusCode == 200) {
-      return RegionResponse.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load regions');
+    try {
+      final response = await client.get(Uri.parse(BASE_URL + "getRegions"));
+      if (response.statusCode == 200) {
+        return RegionResponse.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load regions');
+      }
+    } catch (e, t) {
+      print('Failed to load regions $e');
+      print('Failed to load regions $t');
     }
   }
 
   Future<ZoneResponse> fetchZoneList(int regionId) async {
-    final response =
-        await client.get(Uri.parse(BASE_URL + "getZones/$regionId"));
-    if (response.statusCode == 200) {
-      return ZoneResponse.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load zones');
+    try {
+      final response =
+          await client.get(Uri.parse(BASE_URL + "getZones/$regionId"));
+      if (response.statusCode == 200) {
+        return ZoneResponse.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load zones ${response.statusCode}');
+      }
+    } catch (e, t) {
+      print('Failed to load zones$e');
+      print('Failed to load zones$t');
     }
   }
 
@@ -94,12 +104,19 @@ class UserApiProvider {
   }
 
   Future<ClubResponse> fetchClubList(int regionId, int zoneId) async {
-    final response =
-        await client.get(Uri.parse(BASE_URL + "getClubs/$regionId/$zoneId"));
-    if (response.statusCode == 200) {
-      return ClubResponse.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load clubs');
+    print('Hello clubs 11 $regionId');
+    print('Hello clubs 22 $zoneId');
+    try {
+      final response =
+          await client.get(Uri.parse(BASE_URL + "getClubs/$regionId/$zoneId"));
+      if (response.statusCode == 200) {
+        return ClubResponse.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load clubs ${response.statusCode}');
+      }
+    } catch (e, t) {
+      print('Failed to load clubs $e');
+      print('Failed to load clubs $t');
     }
   }
 
