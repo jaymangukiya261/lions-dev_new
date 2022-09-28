@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io' show Platform;
 
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 /// Define a top-level named handler which background/terminated messages will
 /// call.
 ///
@@ -53,7 +55,17 @@ void main() async {
     badge: true,
     sound: true,
   );
-  runApp(MyApp());
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://84317ad2a9b94bf9bd24b1cd986cdf09@o1429250.ingest.sentry.io/6781519';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(MyApp()),
+  );
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

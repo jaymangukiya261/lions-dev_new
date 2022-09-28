@@ -230,9 +230,8 @@ class pdfCreation {
     final PdfGrid grid = PdfGrid();
     grid.columns.add(count: 4);
     grid.columns[0].width = pageSize.width / 4;
-    grid.columns[1].width = pageSize.width / 4;
+    grid.columns[1].width = (pageSize.width / 4) - 40;
     grid.columns[2].width = pageSize.width / 4;
-    grid.columns[3].width = pageSize.width / 4;
 
     for (var element in apiData) {
       final PdfGridRow row = grid.rows.add();
@@ -251,30 +250,34 @@ class pdfCreation {
       row.cells[0].value = element.name;
       row2.cells[0].style.cellPadding =
           PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+
+      row2.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
+          style: PdfFontStyle.bold);
       row2.cells[0].columnSpan = 2;
-      row2.cells[0].value =
-          'Chairperson Name                 :- ${element.chairperson.name ?? ''}';
+      row2.cells[0].value = 'Chairperson:- ${element.chairperson.name ?? ''}';
       row2.cells[2].columnSpan = 2;
       row2.cells[2].style.cellPadding =
           PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
       row2.cells[2].value =
-          'Contact Number       :- ${element.chairperson.phoneNumber ?? ''}';
+          'Contact:- ${element.chairperson.phoneNumber ?? ''}';
+      row3.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
+          style: PdfFontStyle.bold);
       row3.cells[0].style.cellPadding =
           PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
-      row3.cells[0].value =
-          'Email                :- ${element.chairperson.email ?? ''}';
+      row3.cells[0].value = 'Email:- ${element.chairperson.email ?? ''}';
       row3.cells[0].columnSpan = 2;
       row3.cells[2].style.cellPadding =
           PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
 
       row3.cells[2].columnSpan = 2;
-      row3.cells[2].value =
-          'Club                 :- ${element.chairperson.club.name ?? ''}';
+      row3.cells[2].value = 'Club:- ${element.chairperson.club.name ?? ''}';
 
       ZoneResponse response = await _repository.fetchZones(element.id);
 
       for (var element2 in response.results) {
         final row = grid.rows.add();
+        final row3 = grid.rows.add();
+        final row4 = grid.rows.add();
         final row2 = grid.rows.add();
         row.cells[0].columnSpan = 4;
         row.cells[0].style.cellPadding =
@@ -284,17 +287,43 @@ class pdfCreation {
         row.cells[0].stringFormat =
             PdfStringFormat(alignment: PdfTextAlignment.center);
         row.cells[0].value = element2.name + '(${element.name})';
+        row3.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
+            style: PdfFontStyle.bold);
+        row3.cells[0].style.cellPadding =
+            PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+        row3.cells[0].columnSpan = 2;
+        row3.cells[0].value =
+            'Zone Chairperson Name:- ${element2.chairperson.name ?? ''}';
+        row3.cells[2].columnSpan = 2;
+        row3.cells[2].style.cellPadding =
+            PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+        row3.cells[2].value =
+            'Zone Chairperson Contact:- ${element2.chairperson.phoneNumber ?? ''}';
+        row4.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
+            style: PdfFontStyle.bold);
+        row4.cells[0].style.cellPadding =
+            PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+        row4.cells[0].value =
+            'Zone Chairperson Email:- ${element2.chairperson.email ?? ''}';
+        row4.cells[0].columnSpan = 2;
+        row4.cells[2].style.cellPadding =
+            PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+
+        row4.cells[2].columnSpan = 2;
+        row4.cells[2].value =
+            'Zone Chairperson Club:- ${element2.chairperson.club.name ?? ''}';
+
         row2.cells[0].style.cellPadding =
             PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
         row2.cells[0].columnSpan = 4;
         row2.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
             style: PdfFontStyle.bold);
         row2.cells[0].stringFormat =
-            PdfStringFormat(alignment: PdfTextAlignment.left);
-        row2.cells[0].value = 'Clubs';
-
+            PdfStringFormat(alignment: PdfTextAlignment.center);
+        row2.cells[0].value = 'Clubs of (${element.name}, ${element2.name})';
+        sleep(Duration(milliseconds: 500));
         ClubResponse clubResponse =
-            await _repository.fetchClubs(element.id, element2.id);
+            await _repository.fetchClubs(0, element2.id);
 
         for (var element3 in clubResponse.results) {
           final row = grid.rows.add();
@@ -302,30 +331,43 @@ class pdfCreation {
               style: PdfFontStyle.bold);
           row.cells[0].columnSpan = 4;
           row.cells[0].style.cellPadding =
-              PdfPaddings(bottom: 5, left: 15, right: 5, top: 5);
+              PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+          row.cells[0].stringFormat =
+              PdfStringFormat(alignment: PdfTextAlignment.center);
           row.cells[0].value = element3.name;
           final row2 = grid.rows.add();
           row2.cells[0].columnSpan = 2;
           row2.cells[0].style.cellPadding =
-              PdfPaddings(bottom: 5, left: 15, right: 5, top: 5);
-          row2.cells[2].columnSpan = 2;
+              PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+
+          // row2.cells[3].columnSpan = 2;
           row2.cells[2].style.cellPadding =
               PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
           row2.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
               style: PdfFontStyle.bold);
-          row2.cells[0].value = 'Officers Name ';
-          row2.cells[2].value = 'Officers Number ';
+          row2.cells[3].style.cellPadding =
+              PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+          row2.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
+              style: PdfFontStyle.bold);
+
+          row2.cells[0].value = 'Officer Name';
+          row2.cells[2].value = 'Officer Post';
+          row2.cells[3].value = 'Officer Contact';
 
           element3.members.forEach((element4) {
             final row = grid.rows.add();
             row.cells[0].style.cellPadding =
-                PdfPaddings(bottom: 5, left: 15, right: 5, top: 5);
+                PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
             row.cells[0].columnSpan = 2;
             row.cells[0].value = element4.name;
+
             row.cells[2].style.cellPadding =
                 PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
-            row.cells[2].columnSpan = 2;
-            row.cells[2].value = element4.phoneNumber;
+            row.cells[2].value = element4.post.name;
+
+            row.cells[3].style.cellPadding =
+                PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
+            row.cells[3].value = element4.phoneNumber;
           });
         }
       }
