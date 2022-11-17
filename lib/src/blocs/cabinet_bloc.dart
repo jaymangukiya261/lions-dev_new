@@ -11,6 +11,7 @@ class CabinetBloc {
   final _zoneFetcher = PublishSubject<List<CabinetMember>>();
 
   List<CabinetMember> _membersList = [];
+  List<CabinetMember> membersPrint = [];
   String _searchTerm = '';
 
   Observable<List<CabinetMember>> get allCabinetMembers => _zoneFetcher.stream;
@@ -18,6 +19,7 @@ class CabinetBloc {
   fetchAllCabinetMembers() async {
     CabinetResponse regionResponse = await _repository.fetchCabinetMembers();
     _membersList = regionResponse.results;
+    membersPrint = regionResponse.results;
     _zoneFetcher.sink.add(regionResponse.results);
   }
 

@@ -9,6 +9,7 @@ class DgTeamBloc {
   final _zoneFetcher = PublishSubject<List<CabinetMember>>();
 
   List<CabinetMember> _membersList = [];
+  List<CabinetMember> membersPrint = [];
   String _searchTerm = '';
 
   Observable<List<CabinetMember>> get allDgTeamMembers => _zoneFetcher.stream;
@@ -16,6 +17,7 @@ class DgTeamBloc {
   fetchAllDgTeamMembers() async {
     DgTeamResponse regionResponse = await _repository.fetchDgTeamMembers();
     _membersList = regionResponse.results;
+    membersPrint = regionResponse.results;
     _zoneFetcher.sink.add(regionResponse.results);
   }
 

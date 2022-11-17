@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:lions/src/blocs/generate_pdf/save_file.dart';
+import 'package:lions/src/models/cabinet_member.dart';
 import 'package:lions/src/models/club.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -190,21 +191,19 @@ class pdfCreation {
         bounds: Rect.fromLTWH(118, 30, pageSize.width, 90),
         format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
 
-    final PdfFont contentFont = PdfStandardFont(PdfFontFamily.helvetica, 9);
-
-    final DateFormat format = DateFormat.yMMMMd('en_US');
-    final String invoiceNumber =
-        'Invoice Number: 2058557939\r\n\r\nDate: ${format.format(DateTime.now())}';
-    final Size contentSize = contentFont.measureString(invoiceNumber);
+    // final PdfFont contentFont = PdfStandardFont(PdfFontFamily.helvetica, 9);
+    //
+    // final DateFormat format = DateFormat.yMMMMd('en_US');
+    // final String invoiceNumber =
+    //     'Invoice Number: 2058557939\r\n\r\nDate: ${format.format(DateTime.now())}';
+    // final Size contentSize = contentFont.measureString(invoiceNumber);
     // // ignore: leading_newlines_in_multiline_strings
     // const String address = '''Bill To: \r\n\r\nAbraham Swearegin,
     //     \r\n\r\nUnited States, California, San Mateo,
     //     \r\n\r\n9920 BridgePointe Parkway, \r\n\r\n9365550136''';
 
-    return PdfTextElement(text: '', font: contentFont).draw(
-        page: page,
-        bounds: Rect.fromLTWH(30, 120,
-            pageSize.width - (contentSize.width + 30), pageSize.height - 120));
+    return PdfTextElement()
+        .draw(page: page, bounds: Rect.fromLTWH(30, 70, pageSize.width, 0));
   }
 
   Future<void> createRegionPdf(List<Region> apiData) async {
@@ -380,6 +379,104 @@ class pdfCreation {
     //         PdfPaddings(bottom: 5, left: 5, right: 5, top: 5);
     //   }
     // }
+    isProcessing = false;
+
+    ///this return is complesory
+    return grid;
+  }
+
+  Future<void> createDgTeamReport(
+      List<CabinetMember> apiData, String title) async {
+    isProcessing = true;
+    final PdfDocument document = PdfDocument();
+    final PdfPage page = document.pages.add();
+    final Size pageSize = page.getClientSize();
+
+    final PdfGrid grid = await getDgGrid(apiData, pageSize);
+
+    final PdfLayoutResult result =
+        await drawHeader(page, pageSize, reportName: title);
+    drawGrid(page, grid, result);
+
+    final List<int> bytes = document.saveSync();
+    document.dispose();
+    await saveAndLaunchFile(bytes, '${title.replaceAll(' ', '')}.pdf');
+  }
+
+  getDgGrid(List<CabinetMember> apiData, pageSize) {
+    final PdfGrid grid = PdfGrid();
+    grid.columns.add(count: 4);
+    grid.columns[0].width = pageSize.width / 4;
+    grid.columns[1].width = pageSize.width / 4;
+    grid.columns[2].width = pageSize.width / 4;
+
+    for (var element in apiData) {
+      final PdfGridRow row = grid.rows.add();
+      final PdfGridRow row1 = grid.rows.add();
+      final PdfGridRow row2 = grid.rows.add();
+      final PdfGridRow row3 = grid.rows.add();
+      row.style.font = PdfStandardFont(PdfFontFamily.helvetica, 10,
+          style: PdfFontStyle.bold);
+      row.cells[0].style.cellPadding =
+          PdfPaddings(bottom: 0, left: 5, right: 5, top: 4);
+      row.cells[0].columnSpan = 4;
+      // row.cells[0].style.backgroundBrush = PdfSolidBrush(PdfColor(15, 54, 156));
+      // row.cells[0].style.font = PdfStandardFont(PdfFontFamily.helvetica, 25);
+      // row.cells[0].style.textBrush = PdfBrushes.white;
+      row.cells[0].style.textBrush = PdfBrushes.blue;
+      row.style.font = PdfStandardFont(PdfFontFamily.helvetica, 11,
+          style: PdfFontStyle.bold);
+      row.cells[0].stringFormat =
+          PdfStringFormat(alignment: PdfTextAlignment.left);
+      row.cells[0].value = element.name;
+
+      row.cells[0].style.borders =
+          PdfBorders(bottom: PdfPen(PdfColor(255, 255, 255), width: 0));
+
+      row1.cells[0].style.borders =
+          PdfBorders(top: PdfPen(PdfColor(255, 255, 255), width: 0));
+
+      row1.style.font =
+          PdfStandardFont(PdfFontFamily.helvetica, 8, style: PdfFontStyle.bold);
+      row1.cells[0].style.cellPadding =
+          PdfPaddings(bottom: 3, left: 5, right: 5, top: 0);
+      row1.cells[0].columnSpan = 4;
+      // row.cells[0].style.backgroundBrush = PdfSolidBrush(PdfColor(15, 54, 156));
+      // row.cells[0].style.font = PdfStandardFont(PdfFontFamily.helvetica, 25);
+      // row.cells[0].style.textBrush = PdfBrushes.white;
+      row1.cells[0].style.textBrush = PdfBrushes.red;
+
+      row1.style.font = PdfStandardFont(PdfFontFamily.helvetica, 11,
+          style: PdfFontStyle.bold);
+      row1.cells[0].stringFormat =
+          PdfStringFormat(alignment: PdfTextAlignment.left);
+      row1.cells[0].value = element.post.name;
+
+      row2.style.font =
+          PdfStandardFont(PdfFontFamily.helvetica, 8, style: PdfFontStyle.bold);
+
+      row2.cells[0].style.cellPadding =
+          PdfPaddings(bottom: 3, left: 5, right: 5, top: 4);
+      row2.cells[0].columnSpan = 2;
+      row2.cells[0].value = 'Home Club:- ${element.club.name ?? ''}';
+
+      row2.cells[2].columnSpan = 2;
+      row2.cells[2].style.cellPadding =
+          PdfPaddings(bottom: 3, left: 5, right: 5, top: 4);
+      row2.cells[2].value = 'Contact:- ${element.phoneNumber ?? ''}';
+      row3.style.font =
+          PdfStandardFont(PdfFontFamily.helvetica, 8, style: PdfFontStyle.bold);
+      row3.cells[2].style.cellPadding =
+          PdfPaddings(bottom: 3, left: 5, right: 5, top: 4);
+      row3.cells[2].value = 'Email:- ${element.email ?? ''}';
+      row3.cells[2].columnSpan = 2;
+      row3.cells[0].style.cellPadding =
+          PdfPaddings(bottom: 3, left: 5, right: 5, top: 4);
+
+      row3.cells[0].columnSpan = 2;
+      row3.cells[0].value =
+          'Address:- ${element.address ?? ''} ${element.landmark ?? ''} ${element.city ?? ''} ${element.state ?? ''} ${element.postal ?? ''}';
+    }
     isProcessing = false;
 
     ///this return is complesory

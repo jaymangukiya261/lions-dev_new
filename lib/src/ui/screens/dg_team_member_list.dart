@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lions/src/blocs/dg_team_bloc.dart';
+import 'package:lions/src/blocs/generate_pdf/bloc_pdf.dart';
 import 'package:lions/src/models/cabinet_member.dart';
 import 'package:lions/src/models/dg_team_response.dart';
 import 'package:lions/src/models/lions_category.dart';
@@ -21,6 +22,7 @@ class DgTeamMemberList extends StatefulWidget {
 
 class _DgTeamMemberListState extends State<DgTeamMemberList> {
   final AppBarController appBarController = AppBarController();
+  final pdfs = pdfCreation();
 
   @override
   void initState() {
@@ -36,6 +38,33 @@ class _DgTeamMemberListState extends State<DgTeamMemberList> {
         mainAppBar: AppBar(
           title: Text("${widget.category.title}"),
           actions: [
+            if (!pdfs.isProcessing)
+              TextButton(
+                  onPressed: () {
+                    setState(() {
+                      pdfs
+                          .createDgTeamReport(
+                              bloc.membersPrint, 'DG Team Report')
+                          .whenComplete(() {
+                        setState(() {
+                          pdfs.isProcessing = false;
+                        });
+                      });
+                    });
+                  },
+                  child: Text(
+                    'Download DG Team Report',
+                    style: TextStyle(color: Colors.white),
+                  ))
+            else
+              SizedBox(
+                  height: 5,
+                  width: 50,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  )),
             InkWell(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),

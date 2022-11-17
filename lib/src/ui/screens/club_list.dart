@@ -47,7 +47,7 @@ class _ClubListState extends State<ClubList> {
                   pdfs.createClubPdf(bloc.clubListPrint);
                 },
                 child: Text(
-                  'Club Report',
+                  'Download Club Report',
                   style: TextStyle(color: Colors.white),
                 )),
             InkWell(

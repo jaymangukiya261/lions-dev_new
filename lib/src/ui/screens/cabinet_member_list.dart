@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lions/src/blocs/cabinet_bloc.dart';
+import 'package:lions/src/blocs/generate_pdf/bloc_pdf.dart';
 import 'package:lions/src/models/cabinet_member.dart';
 import 'package:lions/src/models/lions_category.dart';
 import 'package:lions/src/ui/widget/cabinet_member_list_item.dart';
@@ -27,6 +28,7 @@ class _CabinetMemberListState extends State<CabinetMemberList> {
     bloc.fetchAllCabinetMembers();
   }
 
+  final pdfs = pdfCreation();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +37,33 @@ class _CabinetMemberListState extends State<CabinetMemberList> {
           mainAppBar: AppBar(
             title: Text("${widget.category.title}"),
             actions: [
+              if (!pdfs.isProcessing)
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        pdfs
+                            .createDgTeamReport(
+                                bloc.membersPrint, 'Cabinet Members Report')
+                            .whenComplete(() {
+                          setState(() {
+                            pdfs.isProcessing = false;
+                          });
+                        });
+                      });
+                    },
+                    child: Text(
+                      'Download Cabinet Report',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              else
+                SizedBox(
+                    height: 5,
+                    width: 50,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )),
               InkWell(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
